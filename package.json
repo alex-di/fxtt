@@ -1,0 +1,19 @@
+{
+  "name": "fxtt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-di/fxtt.git"
+  },
+  "author": "alex-di",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex-di/fxtt/issues"
+  },
+  "homepage": "https://github.com/alex-di/fxtt#readme"
+}
