@@ -1,13 +1,46 @@
 const assert = require('assert')
 ,     API = require('../')
+,     validCreds = require('./creds')
+,     errors = require('../errors')
 
 describe('Payment API SDK', () => {
+  let client
+  before(() => {
+    client = new API({
+      ...validCreds
+    })
+  })
+
   it('Invalid configuration should throw error', () => {
-    // assert.throws(() => {
-    //   new API()
-    // }, Error, 'No config provided')
-    assert.throws(() => {
-      new API()
-    }, Error)
+    assert.throws(() => new API(), Error)
+    assert.throws(() => new API({}), Error)
+    assert.throws(() => new API({
+      endpoint: '1',
+      password: '2',
+      username: '3'
+    }), Error)
+  })
+
+  it('Should return the list of payments', async () => {
+    let payments = await client.getPayments()
+    assert.ok(Array.isArray(payments))
+  })
+
+  it('Approved payment cant be cancelled', async () => {
+    let { id } = await client.createPayment({})
+    assert.ok(id)
+    await client.approvePayment(id)
+    let payment = await client.getPayment(id)
+    assert.equal(payment.status, 'approved')
+    assert.throws(() => client.cancelPayment(id), errors.CannotCancel)
+  })
+
+  it('Cancelled payment cant be approved', async () => {
+    let { id } = await client.createPayment({})
+    assert.ok(id)
+    await client.cancelPayment(id)
+    let payment = await client.getPayment(id)
+    assert.equal(payment.status, 'cancelled')
+    assert.throws(() => client.approvePayment(id), errors.CannotApprove)
   })
 })
