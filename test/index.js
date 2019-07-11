@@ -15,11 +15,6 @@ describe('Payment API SDK', () => {
   it('Invalid configuration should throw error', () => {
     assert.throws(() => new API(), Error)
     assert.throws(() => new API({}), Error)
-    assert.throws(() => new API({
-      endpoint: '1',
-      password: '2',
-      username: '3'
-    }), Error)
   })
 
   it('Should return the list of payments', async () => {
