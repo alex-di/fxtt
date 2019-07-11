@@ -10,6 +10,12 @@ class API {
     // //   throw new Error('No api endpoint provided')
     // this.baseUrl = new URL(version, endpoint)
   }
+
+  getPayments() {}
+  getPayment(id) {}
+  createPayment(data) {}
+  approvePayment(id) {}
+  cancelPayment(id) {}
 }
 
 module.exports = API
