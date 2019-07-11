@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 ,     createError = require('http-errors')
 ,     path = require('path')
-
+,     AUTH_PATH = 'authenticate'
 class API {
   constructor(config) {
     if (!config)
@@ -12,13 +12,24 @@ class API {
       throw new Error('No api endpoint provided')
     this.version = version
     this.endpoint = endpoint
+    this.authPromise = this._makeRequest(AUTH_PATH, 'POST', {
+      username, password
+    })
+    .then(({ authToken, expiresIn }) => {
+      this.clientToken = authToken
+    })
   }
 
   _makeRequest(pathName, method = 'GET', payload) {
+    let isAuthRequest = pathName === AUTH_PATH
+    if (!this.clientToken && !isAuthRequest)
+      return this.authPromise.then(() => this._makeRequest(...arguments))
+
     let url = new URL(path.join(this.version, pathName), this.endpoint)
     return fetch(url.toString(), {
       method,
       headers: {
+        'Authorization': isAuthRequest ? null : `Bearer ${this.clientToken}`,
         'Content-Type': 'application/json'
       },
       body: typeof payload === 'object' ? JSON.stringify(payload) : payload
