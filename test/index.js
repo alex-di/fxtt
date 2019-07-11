@@ -1,6 +1,7 @@
 const assert = require('assert')
 ,     API = require('../')
 ,     validCreds = require('./creds')
+,     paymentPayload = require('./payload')
 ,     errors = require('../errors')
 
 describe('Payment API SDK', () => {
@@ -27,7 +28,7 @@ describe('Payment API SDK', () => {
   })
 
   it('Approved payment cant be cancelled', async () => {
-    let { id } = await client.createPayment({})
+    let { id } = await client.createPayment(paymentPayload)
     assert.ok(id)
     await client.approvePayment(id)
     let payment = await client.getPayment(id)
@@ -36,7 +37,7 @@ describe('Payment API SDK', () => {
   })
 
   it('Cancelled payment cant be approved', async () => {
-    let { id } = await client.createPayment({})
+    let data = await client.createPayment(paymentPayload)
     assert.ok(id)
     await client.cancelPayment(id)
     let payment = await client.getPayment(id)

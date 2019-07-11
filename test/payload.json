@@ -1,0 +1,9 @@
+{
+  "payeeId": "fc1941f3-7912-4b3d-8fdb-dcb9733aa994",
+  "payerId": "0499274e-9325-43b1-9cff-57c957e9a337",
+  "paymentSystem": "ingenico",
+  "paymentMethod": "mastercard",
+  "amount": 100500.42,
+  "currency": "USD",
+  "comment": "Salary for March"
+}
